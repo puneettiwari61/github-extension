@@ -10,16 +10,12 @@ fetch(window.location.href.includes("?q=is%3Aissue+is%3Aclosed") ? `https://api.
   "Accept":"application/vnd.github.squirrel-girl-preview"
 })
 .then(res=>res.json())
-.then(fetch("https://api.github.com/users/ayush-mann")
-.then(resp => resp.json())
-.then(resp => 
-  {username = resp.login;}
-  ))
 .then(domElemArray => 
 {
   // testing
   let doc = document.querySelector('.user-profile-link')
-  console.log(doc.innerText,"testing")
+  username = doc.innerText.split(" ").pop()
+  console.log(username,"testing")
   console.log(domElemArray,"issues");//arrayIssues of all the issues
   for(let i=0;i<domElemArray.length;i++){
     let extra = domElemArray[i].url.split('/')
@@ -82,7 +78,7 @@ fetch(window.location.href.includes("?q=is%3Aissue+is%3Aclosed") ? `https://api.
             }
           }
         }
-      }, 3000);
+      }, 5000);
       
       //   Object.keys(obj).forEach(num =>{
         //     console.log(num)
