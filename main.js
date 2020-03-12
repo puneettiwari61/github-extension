@@ -1,7 +1,7 @@
 // You js goes here
 // import axios from "axios"
 
-  alert('hello I m extension of chrome ' + window.location.href)
+  // alert('hello I m extension of chrome ' + window.location.href)
 
  
   // issues =  Array.from(issues)
@@ -50,7 +50,21 @@
  
 // }).catch(err => console.log(err))
 
+
+
+
+
+
+
+
+
+
+
+
+
 //v2
+let obj ={}
+
 var array =[]
 let username;
 let url = document.location.href
@@ -70,9 +84,8 @@ fetch(window.location.href.includes("?q=is%3Aissue+is%3Aclosed") ? `https://api.
   let doc = document.querySelector('.user-profile-link')
   console.log(doc.innerText,"testing")
   // 
-  console.log(d);//array of all the issues
+  console.log(d,"issues");//array of all the issues
   for(let i=0;i<d.length;i++){
-    let obj ={}
     let extra = d[i].url.split('/')
     let issueNum = extra.pop()
     
@@ -96,34 +109,46 @@ fetch(window.location.href.includes("?q=is%3Aissue+is%3Aclosed") ? `https://api.
         console.log("filred",filtered[0],d[i].id)
         obj[`${d[i].id}`]= String(filtered[0])
       }
-      array.push(obj) 
+      
+      return obj
     }) 
-
-
-  }}).then(
+    console.log(obj) //unnecessary
+  }
+  array.push(obj)
+}).then(
+  // logic to manipulate dom in the issue page
     e =>{
-      console.log(array)
+      console.log(e,"check") //unnecessary
+      console.log(array,"project content and id to check")
+      let keysArray = []
+     
+      let issuesDomArray = [...document.querySelectorAll('.Box-row--focus-gray')]
+      
+      console.log(issuesDomArray,"new Appraoch")
+      setTimeout(() => {
+        for(let i=0;i<issuesDomArray.length;i++){
+        
+          for(let j=0;j<array.length;j++){
+            if(array[j][issuesDomArray[i].dataset.id]!="Noneyet"){
+              const span =document.createElement("span")
+              span.innerText = array[j][issuesDomArray[i].dataset.id] 
+              issuesDomArray[i].append(span) 
+              console.log("dom manipulate check")
+            }
+          }
+        }
+      }, 3000);
+
+
+    //   Object.keys(obj).forEach(num =>{
+    //     console.log(num)
+    //   //   if(ids === num){ 
+    //   //  var element =  document.querySelector(`#issue_${issueNum}_link`)
+    //   //  element.innerText = element.innerText + obj[num]
+    //   //  console.log(element)
+    // //  }
+    // })
     }
   )
 
-  // content.js
-// background.js
-
-// // Called when the user clicks on the browser action.
-// chrome.browserAction.onClicked.addListener(function(tab) {
-//   // Send a message to the active tab
-//   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//     var activeTab = tabs[0];
-//     chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_browser_action"});
-//   });
-// });
-
-// // This block is new!
-// chrome.runtime.onMessage.addListener(
-//   function(request, sender, sendResponse) {
-//     if( request.message === "open_new_tab" ) {
-//       chrome.tabs.create({"url": request.url});
-//     }
-//   }
-// );
 
