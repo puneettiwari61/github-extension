@@ -65,7 +65,7 @@ fetch(window.location.href.includes("?q=is%3Aissue+is%3Aclosed") ? `https://api.
         for(let i=0;i<issuesDomArray.length;i++){
         
           for(let j=0;j<arrayIssues.length;j++){
-            if(arrayIssues[j][issuesDomArray[i].dataset.id]!="Noneyet"){
+            if((arrayIssues[j][issuesDomArray[i].dataset.id]) && (arrayIssues[j][issuesDomArray[i].dataset.id]!="Noneyet")){
               const p =document.createElement("p")
               p.innerText = arrayIssues[j][issuesDomArray[i].dataset.id] 
               p.style.background="#2AB049"
@@ -82,7 +82,7 @@ fetch(window.location.href.includes("?q=is%3Aissue+is%3Aclosed") ? `https://api.
             }
           }
         }
-      }, 3500);
+      }, 3000);
       
       //   Object.keys(obj).forEach(num =>{
         //     console.log(num)
