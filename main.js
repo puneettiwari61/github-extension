@@ -1,7 +1,7 @@
 // Your js goes here
 //v2
 let obj ={}
-
+let mean = []
 var arrayIssues =[]
 let username;
 let url = document.location.href
@@ -29,49 +29,59 @@ fetch(window.location.href.includes("?q=is%3Aissue+is%3Aclosed") ? `https://api.
     }).then(function(html){
       var parser = new DOMParser();
       var doc = parser.parseFromString(html, 'text/html');
-      var item = doc.querySelectorAll('.js-issue-sidebar-form');
-      let children = item[1].innerText
-      let regexElem  = children.replace(/ /g,'').trim().replace(/\r?\n|\r/g," ").split('    ')
-      let filtered = regexElem.filter(item => item.length>0)
-      filtered.shift()
-      filtered.shift()
-      let multiProjects=[] ;
-      multiProjects.push(filtered[0])
-      let x = filtered.map(s=>{
-      if(s[0]===" "&&s[1]===" "){
-        multiProjects.push(s)
-        return s
+      var item = Array.from(doc.querySelectorAll('.sidebar-progress-bar'));
+    
+      //version 4
+      let children = item[0].innerText
+      regexElem  = children.replace(/ /g,'').trim().replace(/\r?\n|\r/g," ").split('    ').join("").split(' ')
+      console.log("regex",regexElem)
+      let multiProjects=[];
+      multiProjects.push(regexElem[0])
+      for(let i=0;i<regexElem.length;i++){
+        if(regexElem[i]===""){
+          console.log(regexElem[i+1],"hulop")
+          multiProjects.push(regexElem[i+1])
+        }
       }
-      })
-      console.log(x,"x")
-      console.log(filtered,"filtered")
-      console.log(multiProjects,"multi")
-      if(urlArray[3]==username.toLowerCase()){
-        console.log("filred",filtered[1],domElemArray[i].id)
-        obj[`${domElemArray[i].id}`]= String(filtered[1])
-      }else{
-        console.log("filred",filtered[0],domElemArray[i].id)
-        obj[`${domElemArray[i].id}`]= String(filtered[0].trim().split("  ")[0])
-      }
+      // console.log(multiProjects,"MEAN")
+
+      // let regexElem  = children.replace(/ /g,'').trim().replace(/\r?\n|\r/g," ").split('    ')
+      // let filtered = regexElem.filter(item => item.length>0)
+      // filtered.shift()
+      // filtered.shift()
+      // let multiProjects=[] ;
+      // multiProjects.push(filtered[0])
+      // let x = filtered.map(s=>{
+      // if(s[0]===" "&&s[1]===" "){
+      //   multiProjects.push(s)
+      //   return s
+      // }
+      // })
+      // console.log(x,"x")
+      // console.log(filtered,"filtered")
+      // console.log(multiProjects,"multi")
+      // if(urlArray[3]==username.toLowerCase()){
+      //   console.log("filred",domElemArray[i].id,regexElem[0])
+      //   obj[`${domElemArray[i].id}`]= regexElem[0]
+      // }else{
+      //   console.log("filred",domElemArray[i].id,regexElem[0])
+      //   obj[`${domElemArray[i].id}`]= regexElem[0]
+      // }
+      obj[`${domElemArray[i].id}`]= multiProjects[0]
       
-      return obj
     }) 
-    console.log(obj) //just for checking 
+    
   }
   arrayIssues.push(obj)
 }).then(
   // logic to manipulate dom in the issue page
     response =>{
-      console.log(response,"check") //just for checking
       console.log(arrayIssues,"project content and id to check")
-      let keysArray = []
-     
       let issuesDomArray = [...document.querySelectorAll('.Box-row--focus-gray')]
-      
-      console.log(issuesDomArray,"new Appraoch")
+      // console.log(issuesDomArray,"new Appraoch")
       setTimeout(() => {
         for(let i=0;i<issuesDomArray.length;i++){
-        
+        console.log("golmaloloi")
           for(let j=0;j<arrayIssues.length;j++){
             if((arrayIssues[j][issuesDomArray[i].dataset.id]) && (arrayIssues[j][issuesDomArray[i].dataset.id]!="Noneyet")){
               const p =document.createElement("p")
@@ -91,16 +101,5 @@ fetch(window.location.href.includes("?q=is%3Aissue+is%3Aclosed") ? `https://api.
           }
         }
       }, 5000);
-      
-      //   Object.keys(obj).forEach(num =>{
-        //     console.log(num)
-        //   //   if(ids === num){ 
-          //   //  var element =  document.querySelector(`#issue_${issueNum}_link`)
-          //   //  element.innerText = element.innerText + obj[num]
-          //   //  console.log(element)
-          // //  }
-          // })
-          
-          
     }
   )
