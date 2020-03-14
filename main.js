@@ -34,6 +34,18 @@ fetch(window.location.href.includes("?q=is%3Aissue+is%3Aclosed") ? `https://api.
       let regexElem  = children.replace(/ /g,'').trim().replace(/\r?\n|\r/g," ").split('    ')
       let filtered = regexElem.filter(item => item.length>0)
       filtered.shift()
+      filtered.shift()
+      let multiProjects=[] ;
+      multiProjects.push(filtered[0])
+      let x = filtered.map(s=>{
+      if(s[0]===" "&&s[1]===" "){
+        multiProjects.push(s)
+        return s
+      }
+      })
+      console.log(x,"x")
+      console.log(filtered,"filtered")
+      console.log(multiProjects,"multi")
       if(urlArray[3]==username.toLowerCase()){
         console.log("filred",filtered[1],domElemArray[i].id)
         obj[`${domElemArray[i].id}`]= String(filtered[1])
